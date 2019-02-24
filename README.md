@@ -7,9 +7,9 @@ KEY POINTS
 
 1. Create Virtual Environments using virtualenv. 
 2. Use the Flask framework to use Python as a Server Side Language. 
-	pip install flask
-	localhost (the port number): the IP address of the local machine, 127.0.0.1
-	set (or export) FLASK_DEBUG = 1: activate the debugger
+- pip install flask
+- localhost (the port number): the IP address of the local machine, 127.0.0.1
+- set (or export) FLASK_DEBUG = 1: activate the debugger
 3. Create template directory in the project folder, which contains .html files.
 4. Learned template inheritance, layout.html is the skeleton to be inherited, .html file extends layout.html.
 5. Add navigation bar and global styles.
@@ -27,6 +27,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db' # /// means the rela
 db = SQLAchemy(app) # create db variable, which represent database structure as classes (models), each class is a table in the db.
 12. In models.py, User and Post class inherit from db.Model.
 13. Usage:
+```
 >>> from flaskblog import db
 >>> db.create_all()   # then site.db is created in the current folder
 >>> from flaskblog import User, Post
@@ -76,23 +77,28 @@ User('Jenny','Jenny@gmail.com','default.jpg')
 >>> db.create_all()
 >>> User.query.all()
 []
+```
 14. Use package instead of module to avoid circular import
+```
 |-- flaskblog
 |    |-- __init__.py
 |    |-- forms.py
 |    |-- models.py
 |    |-- routes.py
 |    |-- static
-|    |    |-- main.css
+|    |    |-- main.css 
 |    |-- templates
 |         |-- about.html
 |         |-- home.html
 |         |-- layout.html
 |         |-- register.html
 |-- run.py
+```
 15. Create database in cmd
+```
 >>> from flaskblog import db
 >>> from flaskblog.models import User, Post
 >>> db.create_all()
 >>> User.query.all()
 []
+```
