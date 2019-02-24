@@ -3,28 +3,38 @@
 Learning flask using python to build a blog app.
 
 
-KEY POINTS
+## KEY POINTS
 
-1. Create Virtual Environments using virtualenv. 
+1. Create Virtual Environments
+    - use virtualenv. 
 2. Use the Flask framework to use Python as a Server Side Language. 
-- pip install flask
-- localhost (the port number): the IP address of the local machine, 127.0.0.1
-- set (or export) FLASK_DEBUG = 1: activate the debugger
-3. Create template directory in the project folder, which contains .html files.
-4. Learned template inheritance, layout.html is the skeleton to be inherited, .html file extends layout.html.
+    - pip install flask
+    - localhost (the port number): the IP address of the local machine, 127.0.0.1
+    - set (or export) FLASK_DEBUG = 1: activate the debugger
+3. Mkdir templates
+    - in the project folder, contains .html files.
+4. Learned template inheritance
+    - layout.html is the skeleton to be inherited, .html file extends layout.html.
 5. Add navigation bar and global styles.
-6. Mkdir statics to store stylesheets, Javascripts, images, here is main.css file, which is linked by layout.html <head>.
+6. Mkdir statics
+    - store stylesheets, Javascripts, images...
+    - here is main.css file, which is linked by layout.html <head>.
 7. The function url_for() accepts the name of the function as an argument, which is useful 
 because it will find the exact location of routes for us so that we don't need to worry about it in the background.
-8. Forms - pip install flask-wtf, which is wtforms. In forms.py, the class RegistrationForm and LoginForm all inherit from FlaskForm, 
-which is a class of flask_wtf.
-9. In flaskblog.py module (later the __init__.py in the flaskblog package), add.config['SECRET_KEY']=..., in python we can
-import secrets, secrets.token_hex(16) to generate the secret key.
+8. Forms
+    - pip install flask-wtf, which is wtforms. 
+    - in forms.py, the class RegistrationForm and LoginForm all inherit from FlaskForm, which is a class of flask_wtf.
+9. Secret Key
+    - in flaskblog.py module (later the __init__.py in the flaskblog package)
+    - add.config['SECRET_KEY']=...
+    - import secrets, secrets.token_hex(16) to generate the secret key.
 10. The routes register and login use forms mentioned above, in register.html and login.html, the block content part should 
 contain the form information.
-11. Use database, pip install flask_sqlalchemy, from flask_sqlalchemy import SQLAlchemy, 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db' # /// means the relative path from the current file
-db = SQLAchemy(app) # create db variable, which represent database structure as classes (models), each class is a table in the db.
+11. Use database
+    - pip install flask_sqlalchemy
+    - from flask_sqlalchemy import SQLAlchemy
+    - app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db' # /// means the relative path from the current file
+    - db = SQLAchemy(app) # create db variable, representing database structure as classes (models), each class is a table in the db.
 12. In models.py, User and Post class inherit from db.Model.
 13. Usage:
 ```
@@ -102,3 +112,28 @@ User('Jenny','Jenny@gmail.com','default.jpg')
 >>> User.query.all()
 []
 ```
+16. User Authentification. Hash and verify passwords
+     - pip install flask-bcrypt
+
+```
+>>> from flask_bcrypt import Bcrypt
+>>> bcrypt = Bcrypt()
+>>> bcrypt.generate_password_hash('testing')
+b'$2b$12$5vFSM9rpR3XULgIbkpRYVuCj27ssQJyXUrWLbyaJNmz.6cF10AO96'
+>>> bcrypt.generate_password_hash('testing').decode('utf-8')
+'$2b$12$iiicRu9QQ/WSf8NiY149Y.jH.7GfvDDbbvzjpUHDq3Sp7craz.Qte'
+>>> hashed_pw = bcrypt.generate_password_hash('testing').decode('utf-8')
+>>> bcrypt.check_password_hash(hashed_pw, 'password')
+False
+>>> bcrypt.check_password_hash(hashed_pw, 'testing')
+True
+```
+17. Users can login and logout
+     - pip install flask-login
+     - LoginManager, UserMixin, login_user, current_user
+     - navigation bar
+     - correct create account page
+     - must login to see the account page
+     - if not logged in, account route redirect user to login page
+     - redirect to *next page* using flask.request.args.get('next'), or None to 'home'
+
