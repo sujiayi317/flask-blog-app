@@ -141,4 +141,8 @@ True
      - users can update, field already filled for users
      - don't forget enctype="multipart/form-data" in account.html
      - auto-resize image when uploading: pip install Pillow
+19. Create, update and delete posts
+     - save newly created post to database and desplay it on home page
+     - delete botton, extra confirmation, using [bootstrap code](https://getbootstrap.com/docs/4.0/components/modal/#live-demo)
+
 
