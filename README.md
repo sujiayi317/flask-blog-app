@@ -144,5 +144,123 @@ True
 19. Create, update and delete posts
      - save newly created post to database and desplay it on home page
      - delete botton, extra confirmation, using [bootstrap code](https://getbootstrap.com/docs/4.0/components/modal/#live-demo)
+20. Pagination
+     - posts = Post.query.order_by(Post.date_posted.desc()).paginate(page=page, per_page=5)
 
+```
+>>> from flaskblog.models import Post
+C:\Users\JIAYIS~1\Desktop\ENVIRO~1\PROJEC~1\lib\site-packages\flask_sqlalchemy\__init__.py:794: FSADe
+precationWarning: SQLALCHEMY_TRACK_MODIFICATIONS adds significant overhead and will be disabled by de
+fault in the future.  Set it to True or False to suppress this warning.
+  'SQLALCHEMY_TRACK_MODIFICATIONS adds significant overhead and '
+>>> post = Post.query.all()
+>>> posts = Post.query.all()
+>>> for post in posts:
+...     print(post)
+...
+Post('My first Updated Post', '2019-02-25 15:41:55.448295')
+Post('A Second Post', '2019-02-25 16:20:39.511205')
+Post('Programming languages for a qualified full stack developer', '2019-02-25 21:56:23.555072')
+Post('Front-end technology', '2019-02-25 21:57:22.307062')
+Post('Back-End Developer - skills and tools', '2019-02-25 22:03:24.162886')
+Post('Ruby learning order', '2019-02-25 22:12:42.078326')
+Post('Pros and cons of Flask and Django', '2019-02-25 22:19:40.784217')
+Post('Flask:', '2019-02-25 22:25:19.160750')
+Post('Django framework: ', '2019-02-25 22:25:58.257603')
+Post('Popular applications and services built with Python', '2019-02-25 22:26:57.504383')
+Post('Open Source Projects', '2019-02-25 23:01:59.716831')
+Post('The most distilled way to improve a Github profile', '2019-02-25 23:04:11.207612')
+Post('Python in Artificial Intelligence (AI):', '2019-02-25 23:37:13.325630')
+Post('Python in Big Data', '2019-02-25 23:37:26.905883')
+Post('Python in Data Science:', '2019-02-25 23:37:48.344707')
+Post('Python in Testing Frameworks:', '2019-02-25 23:38:05.390772')
+Post('Python in Web Development:', '2019-02-25 23:38:41.192807')
+Post('3 main popular applications for Python', '2019-02-25 23:56:10.878898')
+Post('Popular machine learning algorithms', '2019-02-25 23:57:40.065928')
+Post('What is Java?', '2019-02-26 00:02:22.124745')
+Post('Practice Coding', '2019-02-26 00:06:30.528135')
+Post('AI automates repetitive learning and discovery through data. ', '2019-02-26 00:09:09.731899')
+Post('AI adds intelligence', '2019-02-26 00:09:30.662352')
+Post('AI adapts through progressive learning algorithms', '2019-02-26 00:09:49.213537')
+Post('AI analyzes more and deeper data', '2019-02-26 00:10:06.594489')
+Post('AI achieves incredible accuracy', '2019-02-26 00:10:27.713606')
+Post('AI gets the most out of data', '2019-02-26 00:10:45.401517')
+>>> posts = Post.query.paginate()
+>>> posts
+<flask_sqlalchemy.Pagination object at 0x000002183FF70BE0>
+>>> dir(posts)
+['__class__', '__delattr__', '__dict__', '__dir__', '__doc__', '__eq__', '__format__', '__ge__', '__g
+etattribute__', '__gt__', '__hash__', '__init__', '__init_subclass__', '__le__', '__lt__', '__module_
+_', '__ne__', '__new__', '__reduce__', '__reduce_ex__', '__repr__', '__setattr__', '__sizeof__', '__s
+tr__', '__subclasshook__', '__weakref__', 'has_next', 'has_prev', 'items', 'iter_pages', 'next', 'nex
+t_num', 'page', 'pages', 'per_page', 'prev', 'prev_num', 'query', 'total']
+>>> posts.per_page
+20
+>>> posts.page
+1
+>>> for post in posts.items:
+...     print(post)
+...
+Post('My first Updated Post', '2019-02-25 15:41:55.448295')
+Post('A Second Post', '2019-02-25 16:20:39.511205')
+Post('Programming languages for a qualified full stack developer', '2019-02-25 21:56:23.555072')
+Post('Front-end technology', '2019-02-25 21:57:22.307062')
+Post('Back-End Developer - skills and tools', '2019-02-25 22:03:24.162886')
+Post('Ruby learning order', '2019-02-25 22:12:42.078326')
+Post('Pros and cons of Flask and Django', '2019-02-25 22:19:40.784217')
+Post('Flask:', '2019-02-25 22:25:19.160750')
+Post('Django framework: ', '2019-02-25 22:25:58.257603')
+Post('Popular applications and services built with Python', '2019-02-25 22:26:57.504383')
+Post('Open Source Projects', '2019-02-25 23:01:59.716831')
+Post('The most distilled way to improve a Github profile', '2019-02-25 23:04:11.207612')
+Post('Python in Artificial Intelligence (AI):', '2019-02-25 23:37:13.325630')
+Post('Python in Big Data', '2019-02-25 23:37:26.905883')
+Post('Python in Data Science:', '2019-02-25 23:37:48.344707')
+Post('Python in Testing Frameworks:', '2019-02-25 23:38:05.390772')
+Post('Python in Web Development:', '2019-02-25 23:38:41.192807')
+Post('3 main popular applications for Python', '2019-02-25 23:56:10.878898')
+Post('Popular machine learning algorithms', '2019-02-25 23:57:40.065928')
+Post('What is Java?', '2019-02-26 00:02:22.124745')
+>>> posts = Post.query.paginate(page=2)
+>>> for post in posts.items:
+...     print(post)
+...
+Post('Practice Coding', '2019-02-26 00:06:30.528135')
+Post('AI automates repetitive learning and discovery through data. ', '2019-02-26 00:09:09.731899')
+Post('AI adds intelligence', '2019-02-26 00:09:30.662352')
+Post('AI adapts through progressive learning algorithms', '2019-02-26 00:09:49.213537')
+Post('AI analyzes more and deeper data', '2019-02-26 00:10:06.594489')
+Post('AI achieves incredible accuracy', '2019-02-26 00:10:27.713606')
+Post('AI gets the most out of data', '2019-02-26 00:10:45.401517')
+>>> posts = Post.query.paginate(per_page=5)
+>>> posts.page
+1
+>>> for post in posts.items:
+...     print(post)
+...
+Post('My first Updated Post', '2019-02-25 15:41:55.448295')
+Post('A Second Post', '2019-02-25 16:20:39.511205')
+Post('Programming languages for a qualified full stack developer', '2019-02-25 21:56:23.555072')
+Post('Front-end technology', '2019-02-25 21:57:22.307062')
+Post('Back-End Developer - skills and tools', '2019-02-25 22:03:24.162886')
+>>> posts = Post.query.paginate(per_page=5, page=2)
+>>> posts.page
+2
+>>> for post in posts.items:
+...     print(post)
+...
+Post('Ruby learning order', '2019-02-25 22:12:42.078326')
+Post('Pros and cons of Flask and Django', '2019-02-25 22:19:40.784217')
+Post('Flask:', '2019-02-25 22:25:19.160750')
+Post('Django framework: ', '2019-02-25 22:25:58.257603')
+Post('Popular applications and services built with Python', '2019-02-25 22:26:57.504383')
+>>> posts.total
+27
+>>>
+```
 
+     - show the newest posts on top
+```
+posts = Post.query.filter_by(author=user).order_by(Post.date_posted.desc()).paginate(page=page, per_page=5)
+```
+     - desplay a new route with posts from a particular user
