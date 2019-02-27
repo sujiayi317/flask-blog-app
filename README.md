@@ -263,4 +263,35 @@ Post('Popular applications and services built with Python', '2019-02-25 22:26:57
 ```
 posts = Post.query.filter_by(author=user).order_by(Post.date_posted.desc()).paginate(page=page, per_page=5)
 ```
+     
      - desplay a new route with posts from a particular user
+
+21. Use email to allow users to reset passwords
+     - usage of TimedJSONWebSignatureSerializer
+```
+>>> from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
+>>> s = Serializer('secret', 30)
+>>> token = s.dumps({'user_id': 1}).decode('utf-8')
+>>> token
+'eyJhbGciOiJIUzUxMiIsImlhdCI6MTU1MTI4NDEzOCwiZXhwIjoxNTUxMjg0MTY4fQ.eyJ1c2VyX2lkIjoxfQ.BmgsjI4UBr9-sieP_42Q8anQyWINaiyngaUEuahUEWi5_Lms8dU2V7HjYtPHxnhKY4HBYCQl7vmsmSeH_P4HeQ'
+>>> s.loads(token)
+{'user_id': 1}
+>>> s.loads(token)
+Traceback (most recent call last):
+  File "<input>", line 1, in <module>
+  File "C:\Users\Jiayi Su\Desktop\Environments\project1_env\lib\site-packages\itsdangerous\jws.py", line 205, in loads
+    date_signed=self.get_issue_date(header),
+itsdangerous.exc.SignatureExpired: Signature expired
+```
+     - pip install flask_mail
+```
+def send_reset_email(user):
+    token = user.get_reset_token()
+    msg = Message('Password Reset Request', sender='sujiayi317@gmail.com', recipients=[user.email])
+    msg.body = f'''To reset your password, visit the following link:
+{url_for('reset_token', token=token, _external=True)}
+
+If you did not make this request then simply ignore this email and no changes will be made.
+'''
+    mail.send(msg)
+```
