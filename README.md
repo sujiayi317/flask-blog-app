@@ -295,3 +295,46 @@ If you did not make this request then simply ignore this email and no changes wi
 '''
     mail.send(msg)
 ```
+
+22. Restructure the application & Blueprints
+     - move configuration variables into their own file
+     - move the creation of the application into its own function, to allow different instance with configuration
+     - app factory (testing + production)
+     - import Blueprint objects from each of those packages and register them with the route
+
+```
+|-- flaskblog
+|    |-- __init__.py
+|    |-- config.py
+|    |-- main
+|         |-- __init__.py
+|         |-- routes.py
+|    |-- models.py
+|    |-- posts
+|    |    |-- __init__.py 
+|    |    |-- forms.py 
+|    |    |-- routes.py 
+|    |-- site.db
+|    |-- statics
+|    |    |-- main.css 
+|    |    |-- profile_pics 
+|    |         |-- default.jpg...
+|    |-- templates
+|    |    |-- about.html
+|    |    |-- account.html
+|    |    |-- create_post.html
+|    |    |-- home.html
+|    |    |-- layout.html
+|    |    |-- login.html
+|    |    |-- post.html
+|    |    |-- register.html
+|    |    |-- reset_request.html
+|    |    |-- reset_token.html
+|    |    |-- user_posts.html
+|    |-- users
+|         |-- __init__.py 
+|         |-- forms.py 
+|         |-- routes.py
+|         |-- utils.py
+|-- run.py
+```
