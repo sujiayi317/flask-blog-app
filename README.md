@@ -338,3 +338,10 @@ If you did not make this request then simply ignore this email and no changes wi
 |         |-- utils.py
 |-- run.py
 ```
+
+23. Add custom error pages to the application
+     - easy to add new blueprints to the app
+     - in flask a second value, which is the status code (default: 200), could be returned with render_template
+        - 403 Error: forbidden response
+        - 500 Error: general server error
+     - register blueprints with the application in __init__.py
