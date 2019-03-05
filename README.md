@@ -345,3 +345,133 @@ If you did not make this request then simply ignore this email and no changes wi
         - 403 Error: forbidden response
         - 500 Error: general server error
      - register blueprints with the application in __init__.py
+
+24. Download Ubuntu on Windows 10
+     - start menu->PowerShell->Run as Administrator
+     - Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Windows-Subsystem-Linux
+     - Once the system's rebooted, go to microsoft store, search for Linux, install Ubuntu.
+     - sudo apt-get update
+     - sudo apt-get upgrade
+     - sudo apt-get install tree
+
+25. Short cut
+     - Ctrl+A: move to the beginning of the line
+     - Ctrl+E: end
+     - Ctrl+U: delete everything before curser
+     - Ctrl+K: after
+     - !+ characters: rerun command "characters"
+     - history: of all commands
+     - Ctrl+r: interactively search for previous command
+     - Ctrl+l: clear screen (still can scroll up)
+
+26. Linode (or Digital Ocean or AWS)
+     - ssh root@45.79.21.84
+     - apt update && apt upgrade
+     - hostnamectl set-hostname flask-server
+     - nano /etc/hosts  -> 45.79.21.84 tab flask-server -> Ctrl+X  Y  Enter
+     - add a limitted user to our machine, who is still able to run admin commands using sudo (safer than running everything as root
+     - adduser jenny
+     - adduser jenny sudo     (add to sudo group so that jenny can run those admin commands)
+     - exit
+     - ssh jenny@45.79.21.84
+
+26. Private/Public Key.
+     - sudo chmod 700 ~/.ssh/
+     - sudo chmod 600 ~/.ssh/*
+     
+27. Disallow root login for ssh
+     - sudo nano /etc/ssh/sshd_config  ->  PermitRootLogin no
+     - sudo systemctl restart sshd
+
+28. Set up a firewall
+     - sudo apt install ufw  (uncomplicated fire wall)
+     - sudo ufw default allow outgoing
+     - sudo ufw default deny incomming
+     - sudo ufw allow ssh
+     - sudo ufw allow 5000
+     - sudo ufw enable  (=>Firewall is active and enabled on system startup)
+     - sudo ufw status
+
+29. Deploy app
+   (1) to put app on web server
+     - sudo apt install python3-pip
+     - pip freeze > requirements.txt
+     - cd Env_Flask_Blog
+     - scp -r Env_Flask_Blog jenny@45.79.21.84:~/
+     - scp -r /mnt/c/Users/Jiayi\ Su/Desktop/Flask_Blog jenny...
+     - sudo apt install python3-pip
+     - sudo apt install python3-venv
+     - python3 -m venv Flask_Blog/venv
+     - cd Flask_Blog/
+     - ls   (=>flaskblog  requirement.txt   run.py  venv)
+
+30. activate the virtual environment
+     - source venv/bin/activate
+     - (venv)jenny@flask-server:~/Flask_Blog$pip install -r requirements.txt
+     
+31. create a config file
+     - sudo touch /etc/config.json
+     - sudo nano /etc/config.json
+     - (import os -> os.environ.get('SECRET_KEY') ... )
+     - flaskblog/config.py, import json; with open('/etc/config.json') as config_file: config = json.load(config_file) ...
+
+32. set host=0.0.0.0 to expose the app to the outside world -- use flask run
+     - export FLASK_APP=run.py  (to create a temperary environment variable for testing)
+     - flask run --host=0.0.0.0
+     
+33. nginx -- web server to handle requests, eg. static files, it'll not actually handle python code
+     - cd
+     - sudo apt install nginx
+   
+34. gunicorn -- handle python code, update the configuration file for nginx
+
+35. remove the default nginx config file
+     - sudo rm /etc/nginx/sites-enabled/default
+     - sudo nano /etc/nginx/sites-enalbed/flaskblog
+'''
+server{
+	listen 80;
+	server_name 45.79.21.84;
+
+	location /static {
+		alias /home/jenny/Flask_Blog/flaskblog/static;
+	}
+	location / {
+		proxy_pass http://localhost:8000;
+		include /etc/nginx/proxy_params;
+		proxy_redirect off;
+	}
+}
+'''
+
+36. open the port 80, make nginx and gunicorn running, visit app at IP address:45.79.21.84
+     - sudo ufw allow http/tcp
+     - sudo ufw delete allow 5000
+     - sudo ufw enable
+     - sudo systemctl restart nginx
+
+     - cd Flask_Blog/
+     - ls  (=>run.py ...)
+     - cat run.py  (=>app=create_app())
+     - gunicorn -w 3 run:app  (=> Listenning at: http://127.0.0.1:8000 (11359)  Using worker:sync   Booting worker with pid: 11362, 11363, 11365)
+
+37. use supervisor to constantly monitor gunicorn and make it runnning and autostart & auto-re-start if crush
+     - sudo apt install supervisor
+     - sudo nano /etc/supervisor/conf.d/flask_blog.conf
+
+38. create log files
+     - sudo mkdir -p /var/log/flaskblog
+     - sudo touch /var/log/flaskblog/flaskblog.err.log
+     - sudo touch /var/log/flaskblog/flaskblog.out.log
+     - sudo supervisorctl reload
+
+39. handle large account picture
+     - sudo nano /etc/nginx/nginx.conf  (http{ client_max_body_size 5M;... )
+     - sudo systemctl restart nginx
+     - exit
+
+40. add a domain name (namecheap or goDaddy)
+
+        
+
+     
